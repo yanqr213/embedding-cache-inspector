@@ -1,0 +1,5 @@
+{"id":"doc-1#0","chunk":"Embedding cache inspection helps RAG teams.","embedding":[0.1,0.2,0.3],"model":"text-embedding-3-small","metadata":{"source":"guide.md","language":"en"}}
+{"id":"doc-1#1","chunk":"Embedding cache inspection helps RAG teams.","embedding":[0.1,0.2,0.3],"model":"text-embedding-3-small","metadata":{"source":"guide.md","language":"en"}}
+{"id":"doc-2#0","chunk":"缺少语言元数据的中文片段。","embedding":[0.4,0.5],"model":"text-embedding-3-small","metadata":{"source":"zh.md"}}
+{"id":"doc-3#0","chunk":"This row uses another model.","embedding":[0.7,0.8,0.9],"model":"other-model","metadata":{"source":"mixed.md","language":"en"}}
+{"id":"doc-4#0","chunk":"Empty vector example.","embedding":[],"model":"text-embedding-3-small","metadata":{"source":"bad.md","language":"en"}}
