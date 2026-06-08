@@ -4,9 +4,10 @@ import argparse
 import sys
 from pathlib import Path
 
+from . import __version__
 from .audit import AuditOptions, audit_records
 from .loaders import SchemaOptions, load_jsonl, load_sqlite
-from .reporter import render_json, render_markdown
+from .reporter import render_json, render_junit, render_markdown
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -23,6 +24,7 @@ def build_parser() -> argparse.ArgumentParser:
         prog="embedding-cache-inspector",
         description="Inspect local JSONL and SQLite embedding caches.",
     )
+    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     subparsers = parser.add_subparsers(dest="command")
 
     inspect_parser = subparsers.add_parser("inspect", help="Inspect a cache file.")
@@ -78,7 +80,7 @@ def _add_audit_args(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument(
         "--format",
-        choices=("json", "markdown"),
+        choices=("json", "markdown", "junit"),
         default="markdown",
         help="Report format.",
     )
@@ -123,9 +125,11 @@ def _audit_and_emit(records, findings, args: argparse.Namespace) -> int:
         allow_mixed_models=args.allow_mixed_models,
     )
     result = audit_records(records, options, findings)
-    output = render_json(result) if args.format == "json" else render_markdown(result)
+    output = _render_report(result, args.format)
     if args.report:
-        Path(args.report).write_text(output, encoding="utf-8")
+        report_path = Path(args.report)
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(output, encoding="utf-8")
     else:
         sys.stdout.write(output)
     if args.fail_on == "warning" and (result.errors_count or result.warnings_count):
@@ -155,6 +159,14 @@ def _handle_schema_options(args: argparse.Namespace) -> int:
 
 def _parse_required_metadata(value: str) -> tuple[str, ...]:
     return tuple(part.strip() for part in value.split(",") if part.strip())
+
+
+def _render_report(result, format_name: str) -> str:
+    if format_name == "json":
+        return render_json(result)
+    if format_name == "junit":
+        return render_junit(result)
+    return render_markdown(result)
 
 
 if __name__ == "__main__":

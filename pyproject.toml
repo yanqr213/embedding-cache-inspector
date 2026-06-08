@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "embedding-cache-inspector"
-version = "0.1.0"
+version = "0.2.0"
 description = "Local JSONL and SQLite embedding cache audit CLI for RAG developers."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -34,6 +34,7 @@ eci = "embedding_cache_inspector.cli:main"
 Homepage = "https://github.com/yanqr213/embedding-cache-inspector"
 Repository = "https://github.com/yanqr213/embedding-cache-inspector"
 Issues = "https://github.com/yanqr213/embedding-cache-inspector/issues"
+Changelog = "https://github.com/yanqr213/embedding-cache-inspector/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
